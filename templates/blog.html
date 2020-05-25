@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load staticfiles %}
+    <meta charset="UTF-8">
+    <title>伯乐在线</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/advanced.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/animate.css' %}" />
+    <link rel="stylesheet" type="text/css"  href="{% static 'css/index.css' %}" />
+    <link rel="stylesheet" type="text/css"  href="{% static 'css/reset1.css' %}" />
+    <link rel="stylesheet" type="text/css"  href="{% static 'css/reset.css' %}" />
+    <link rel="stylesheet" type="text/css"  href="{% static 'css/result.css' %}" />
+    <link rel="stylesheet" type="text/css"  href="{% static 'css/style.css' %}"/>
+    <link rel="stylesheet" type="text/css"  href="{% static 'css/style1.css' %}" />
+    <style type="text/css" rel="stylesheet">
+        *{
+            padding: 0px;
+            margin: 0px;
+        }
+        .box{
+            width: 800px;
+            margin: 0 auto;
+        }
+        .top{
+            margin-top: 20px;
+        }
+        .center h1{
+            font-size: 24px;
+            padding: 20px 10px;
+            border-bottom: 1px solid #e8e8e8;
+            text-align: center;
+        }
+        .date{
+            padding: 5px;
+            border-bottom: 1px solid #e8e8e8;
+            font: 12px normal 微软雅黑;
+            color: #999;
+        }
+        p{
+            margin-bottom: 20px;
+        }
+        img{
+            display: block;
+            margin: 0 auto;
+        }
+        .rest{
+            position: fixed;
+            left: 1000px;
+            top: 500px;
+            width: 30px;
+        }
+        .rest img{
+            max-width: 100%;
+            margin-bottom: 10px ;
+        }
+    </style>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+</head>
+<body>
+    <div class="box">
+        <div class="top">
+            <img src="../static/images/logo.png" alt="">
+        </div>
+
+        <div class="center">
+            <h1>{{ my_result.title }}</h1>
+            <p class="date"></p>
+            <div class="content"></div>
+        </div>
+    </div>
+
+    <div class="rest">
+        <img src="../static/images/top.png" class="top" alt="">
+        <img src="../static/images/btm.png" class="btm" alt="">
+    </div>
+</body>
+<script type="text/javascript">
+        var $btn = $('#btn');
+        var $content = $('.content');
+        var $date = $('.date');
+        var $h1 = $('.center h1');
+        var $top = $('.top');
+        var $btm = $('.btm');
+        var $html = $('html');
+        $(function () {
+            $.ajax({
+                async: true,
+                type: 'get',
+                dataType: 'json',
+                url: '/onlyOne/{{ my_result.id }}',
+                success: function (result) {
+                    $h1.html(result.title);
+                    $date.append('<span>' + result.create_date + '<span> · ');
+                    $.each(result.tags, function (index, tag) {
+                        if (index != result.tags.length - 1) {
+                            $date.append('<span>' + tag + '<span> · ');
+                        } else {
+                            $date.append('<span>' + tag + '<span>');
+                        }
+                    });
+                    $content.append(result.content)
+                },
+            })
+        })
+    </script>
+
+</html>

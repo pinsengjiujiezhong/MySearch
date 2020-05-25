@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>美国地址生成器-->pinsengjiujiezhong</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <meta data-n-head="true" data-hid="description" name="description" content="打造免费的地址生成器-->pinsengjiujiezhong">
+    <style type="text/css">
+        body {
+            background-color: #bfa;
+        }
+        .box {
+            width: 800px;
+            margin: 20px auto;
+        }
+        .box1 {
+            float: left;
+            width: 400px;
+       }
+        .box2 {
+            float: right;
+            width: 400px;
+        }
+        .box3{
+            margin: 10px 0px;
+            zoom:1;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <h1 style="text-align: center">美国地址生成器</h1>
+    <div class="box3">
+        <div class="box1">
+            <span>姓名: </span>
+            <input value="{{ my_result.name }}">
+            <a onclick="copy(event)" href="#">复制</a>
+        </div>
+        <div class="box2">
+            <span>性别: </span>
+            <input value="{{ my_result.gender }}">
+            <a onclick="copy(event)" href="#">复制</a>
+        </div>
+    </div>
+    <div class="box3">
+        <div class="box1">
+            <span>Firstname: </span>
+            <input value="{{ my_result.firstName }}">
+            <a onclick="copy(event)" href="#">复制</a>
+        </div>
+        <div class="box2">
+            <span>Lastname: </span>
+            <input value="{{ my_result.lastName }}">
+            <a onclick="copy(event)" href="#">复制</a>
+        </div>
+    </div>
+    <div class="box3">
+        <div class="box1">
+            <span>Middle name: </span>
+            <input value="{{ my_result.middleName }}">
+            <a onclick="copy(event)" href="#">复制</a>
+        </div>
+        <div class="box2">
+            <span>称呼: </span>
+            <input value="{{ my_result.call }}">
+            <a onclick="copy(event)" href="#">复制</a>
+        </div>
+    </div>
+    <div class="box3">
+        <div class="box1">
+            <span>生日: </span>
+            <input value="{{ my_result.birthday }}">
+            <a onclick="copy(event)" href="#">复制</a>
+        </div>
+        <div class="box2">
+            <span>州: </span>
+            <input value="{{ my_result.State }}">
+            <a onclick="copy(event)" href="#">复制</a>
+        </div>
+    </div>
+    <div class="box3">
+        <div class="box1">
+            <span>街道地址: </span>
+            <input value="{{ my_result.streetAddress }}">
+            <a onclick="copy(event)" href="#">复制</a>
+        </div>
+        <div class="box2">
+            <span>城市: </span>
+            <input value="{{ my_result.city }}">
+            <a onclick="copy(event)" href="#">复制</a>
+        </div>
+    </div>
+    <div class="box3">
+        <div class="box1">
+            <span>电话: </span>
+            <input value="{{ my_result.phone }}">
+            <a onclick="copy(event)" href="#">复制</a>
+        </div>
+        <div class="box2">
+            <span>邮编: </span>
+            <input value="{{ my_result.mail }}">
+            <a onclick="copy(event)" href="#">复制</a>
+        </div>
+    </div>
+    <div class="box3">
+        <div class="box1">
+            <span>州全称: </span>
+            <input value="{{ my_result.full }}">
+            <a onclick="copy(event)" href="#">复制</a>
+        </div>
+        <div class="box2">
+            <span>SSN社会保险号: </span>
+            <input value="{{ my_result.securityNumber }}">
+            <a onclick="copy(event)" href="#">复制</a>
+        </div>
+    </div>
+    <div class="box3">
+        <div class="box1">
+            <span>临时邮箱: </span>
+            <input value="{{ my_result.email }}">
+            <a onclick="copy(event)" href="#">复制</a>
+        </div>
+    </div>
+    <div class="box3">
+          <div class="box2">
+            <span>网络用户名: </span>
+            <input value="{{ my_result.networkUserName }}">
+            <a onclick="copy(event)" href="#">复制</a>
+        </div>
+        <div class="box1">
+            <span>随机密码: </span>
+            <input value="{{ my_result.randomCipher }}">
+            <a onclick="copy(event)" href="#">复制</a>
+        </div>
+    </div>
+    <div class="box3">
+        <div class="box2">
+            <span>信用卡类型: </span>
+            <input value="{{ my_result.creditCardType }}">
+            <a onclick="copy(event)" href="#">复制</a>
+        </div>
+        <div class="box1">
+            <span>信用卡号: </span>
+            <input value="{{ my_result.cardNumber }}">
+            <a onclick="copy(event)" href="#">复制</a>
+        </div>
+    </div>
+    <div class="box3">
+        <div class="box2">
+            <span>CVV2: </span>
+            <input value="{{ my_result.CVV2 }}">
+            <a onclick="copy(event)" href="#">复制</a>
+        </div>
+        <div class="box1">
+            <span>有效期: </span>
+            <input value="{{ my_result.termOfValidity }}">
+            <a onclick="copy(event)" href="#">复制</a>
+        </div>
+    </div>
+    <div class="box3">
+        <div class="box2">
+            <span>职位: </span>
+            <input value="{{ my_result.position }}">
+            <a onclick="copy(event)" href="#">复制</a>
+        </div>
+        <div class="box1">
+            <span>公司: </span>
+            <input value="{{ my_result.company }}">
+            <a onclick="copy(event)" href="#">复制</a>
+        </div>
+
+    </div>
+    <div class="box3">
+        <div class="box2">
+            <span>身高: </span>
+            <input value="{{ my_result.height }}">
+            <a onclick="copy(event)" href="#">复制</a>
+        </div>
+        <div class="box1">
+            <span>体重: </span>
+            <input value="{{ my_result.weight }}">
+            <a onclick="copy(event)" href="#">复制</a>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function copy (event) {
+        var curr_ele = event.target.previousElementSibling
+        curr_ele.select();
+        document.execCommand("Copy");
+    }
+</script>
+
+</body>
+</html>

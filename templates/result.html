@@ -1,0 +1,441 @@
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=emulateIE7" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>详情| mtianyan-search搜索引擎</title>
+<link href="../static/css/style.css" rel="stylesheet" type="text/css" />
+<link href="../static/css/result.css" rel="stylesheet" type="text/css" />
+<link href="../static/css/list.css" rel="stylesheet" type="text/css" />
+<link href="../static/css/base-beta.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        .imgshow{
+            width: 150px;
+            height: 100px;
+            float: left;
+            margin-right: 5px;
+        }
+        img{
+            width: 100%;
+            height: 100%;
+        }
+        .imgshow img{
+            max-width: 100%;
+            max-height: 100%;
+        }
+　　　　  .clearfix:before,.clearfix:after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+        .text1{
+            width: 400px;
+            margin-left: 170px;
+        }
+        .searchButton{
+            margin: 0;
+            padding: 0;
+            border: 1px solid transparent;
+            outline: none;
+        }
+        #hd{
+            margin: 0px 0px 50px 200px;
+        }
+        .logobox{
+            height:  70px;
+            position: relative;
+            left: 200px;
+        }
+        {#.logobox img{#}
+        {#    max-width: 100%;#}
+        {#}#}
+        .title{
+            display: inline-block;
+            width: 400px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        * {
+          margin: 0;
+          padding: 0;
+          list-style: none;
+        }
+        .fl {
+          float: left;
+        }
+        .box {
+          height: 30px;
+          line-height: 30px;
+          margin-top: 10px;;
+          text-align: center;
+        }
+        /*设置“首页”“上一页”“下一页”“尾页”“跳转”5个按钮的样式*/
+        .box button {
+          padding: 0 10px;
+          color:#5A98DE;
+          height: 30px;
+          float: left;
+          cursor: pointer;
+          border: 1px solid #ebebeb;
+          background-color: #ffffff;
+        }
+        .box .first-page,
+        .box .last-page {
+          margin: 0;
+        }
+        .box .pageWrap {    /*把多余的页码给隐藏起来*/
+          height: 30px;
+          float: left;
+          overflow: hidden;
+        }
+        .box .pageWrap ul {
+          width: 100000px;  /*设置数字按钮的滚动长度*/
+          height: 30px;
+          float: left;
+        }
+
+        /*设置数字按钮的样式*/
+        .box .pageWrap ul li {
+          width: 40px; /**/
+          height: 30px;
+          border: 1px solid #ebebeb;
+          line-height: 30px;
+          box-sizing: border-box;
+          cursor: pointer;
+          float: left;
+        }
+        /*设置数字按钮被选中时候的按钮背景颜色*/
+        .box .pageWrap ul .sel-page {
+          background-color: #5A98DE;
+        }
+        /*设置跳转页数的文本框的样式*/
+        .box .jump-text {
+          width: 40px;
+          height: 30px;
+          box-sizing: border-box;
+          text-align: center;
+          float: left;
+        }
+        /*设置跳转按钮的样式*/
+        .box .jump-button {
+          margin: 0;
+          float: left;
+        }
+        /*设置显示总页数和总条数的样式*/
+        .box .total-pages,
+        .box .total-count {
+          margin-left: 10px;
+          float: left;
+          font-size: 14px;
+        }
+        .page{
+            width: 32px;
+            height: 32px;
+            border: 1px solid #e1e2e3;
+            float: left;
+            margin-right: 5px;
+        }
+        .next{
+            height: 32px;
+            padding: 0 8px;
+            border: 1px solid #e1e2e3;
+            float: left;
+            margin-right: 5px;
+        }
+        .curr_page{
+            border: 0;
+            font-weight: bold;
+        }
+    </style>
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="http://static.runoob.com/assets/vue/1.0.11/vue.min.js"></script>
+</head>
+<body>
+<div id="container">
+	<div id="hd" class="ue-clear">
+        <div class="logobox">
+            <a href="https://blog.csdn.net/qq_35741999/" class="logo">
+                <img src="../static/images/logo_test.jpg" alt="">
+            </a>
+        </div>
+        <div class="ue-clear">
+            <ul class="searchList">
+                <li class="searchItem current" data-type="blog">伯乐在线</li>
+                <li class="searchItem" data-type="leyoujia">乐有家</li>
+            </ul>
+        </div>
+        <div class="inputArea">
+            <input type="text" name="keyword" class="searchInput" autofocus="autofocus" value="{{ keyword }}"/>
+            <button  class="searchButton"></button>
+            <ul class="dataList">
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+        </div>
+    </div>
+	<div id="bd" class="ue-clear">
+        <div id="main">
+            <div class="resultArea">
+                <div class="resultList">
+                    {% if type == 'blog' %}
+                        {% for hits in my_result%}
+                        <div class="resultItem">
+                                <div class="itemHead">
+                                    <a href="{{ hits.url }}"  target="_blank" class="title">{{ hits.title }}</a>
+                                </div>
+                                <div class="content">
+                                    <div class="imgshow">
+                                        <img src="{{ hits.img }}" ">
+                                    </div>
+                                    <div class="text clearfix" >
+                                        <span>说明：{{ hits.subtitle }}</span><br>
+                                        <span>发布时间：{{ hits.date }}</span><br>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        {% endfor %}
+                    {% elif type == 'leyoujia' %}
+                            <div class="comm-box clearfix">
+                                <div class="left-box">
+                                    <!-- 学校 -->
+                                    <div class="list-box">
+                                            <ul>
+                                                {% for hits in my_result%}
+                                                    <li class="item clearfix" data-fid="83796568">
+                                                        <div class="img jjs_bd_log" >
+                                                            <a href="{{ hits.url}}" target="_blank" class="jjs_bd_log " tgid="" tglocationid="" tgworkerid="" houseid="83796568" housetype="2">
+                                                                    <img class="lazy" alt="龙园意境双拼房精装修住家舒适" src="{{ hits.img_url }}" onerror="this.src='{{ hits.img_url }}'">
+
+
+                                                                    <i class="icon-new icon-video-new"></i>
+                                                            </a>
+                                                        </div>
+                                                        <div class="text">
+                                                            <p class="tit">
+                                                                <a href="{{ hits.url}}" target="_blank" class="jjs_bd_log " tgid="" tglocationid="" tgworkerid="" houseid="83796568" housetype="2" log-evk="P10511872" log-evv="citycode-000002,hasVideo-true,adId-,adType-,tgLocationId-,fhId-83796568,positionId-35,areaCode-,placeCode-,price-,room-,comId-" title="{{ hits.title }}">{{ hits.title }}</a>
+
+
+                                                            </p>
+                                                            <p class="attr">
+                                                                <span>
+                                                                        {{ hits.type }}
+                                                                </span><em class="line"></em>
+                                                                    <span>{{ hits.orientation }}</span><em class="line"></em>
+                                                                <span>{{ hits.size }}</span><em class="line"></em>
+                                                                <span>{{ hits.big_size }}</span>
+                                                            </p>
+                                                            <p class="attr">
+                                                                    <span>{{ hits.finish }}</span><em class="line"></em>
+                                                                <span>{{ hits.floor }}</span>
+                                                                    <em class="line"></em><span>{{ hits.year }}</span>
+                                                            </p>
+                                                            <p class="attr">
+                                                                <span><a href="{{ hits.plot_url }}" target="_blank">{{ hits.plot }}</a></span><em class="line"></em>
+                                                                <span><a href="#" title="龙岗二手房">{{ hits.location}}</a></span>
+                                                            </p>
+                                                            <p class="labs clearfix">
+                                                                {% for tag in hits.tags %}
+                                                                    <span class="lab lab-mln">{{ tag }}</span>
+                                                                {% endfor %}
+                                                            </p>
+                                                            <div class="btns">
+                                                                        <em class="btn collection" data-fhid="83796568" hascollected="0">收藏</em>
+                                                                <em class="btn compareBtn addCompare" data-fhid="83796568">加入对比</em>
+                                                            </div>
+                                                        </div>
+                                                        <div class="price">
+                                                            <p class="sup"><span class="salePrice">{{ hits.price }}</span>万</p>
+                                                            <p class="sub">{{ hits.unitprice }}/p>
+                                                        </div>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+                    {% endif %}
+                    <div class="box" id="box">
+                        {% if n != 1 %}
+                            <div class="next" onclick="changepage('1')">首页</div>
+                            <div class="next" onclick="changepage('old')">上一页</div>
+                        {% endif %}
+                        {% for page in pageList %}
+                            <div class="page {% if page == n %}curr_page{% endif %}" onclick="changepage({{ page }})">{{ page }}</div>
+                        {% endfor %}
+                        {% if n != pagecount %}
+                            <div class="next" onclick="changepage('next')">下一页</div>
+                            <div class="next" onclick="changepage({{ pagecount }})">末页</div>
+                        {% endif %}
+                    </div>
+
+                </div>
+            </div>
+        </div><!-- End of main -->
+    </div><!--End of bd-->
+</div>
+
+<div id="foot">Copyright &copy;search.mtianyan.cn 版权所有  E-mail:search@mtianyan.cn</div>
+</body>
+<script type="text/javascript">
+    $old_page = $('.old_page')
+    $next_pahe = $('.next_pahe')
+    function changepage(value) {
+        url_params = window.location.href.split('n=')
+        console.log('url_params: ', url_params)
+        if (url_params.length == 2){
+            curr_page = url_params[1]
+        }else{
+            curr_page = 1
+        }
+        if(value == 'old'){
+            page = curr_page - 0 - 1
+        }else if (value == 'next'){
+            page = curr_page - 0 +1
+        }else{
+            page = value
+        }
+        local_url = 'http://127.0.0.1:8000/search/?keyword={{ keyword }}&type={{ type }}&n=' + page
+        $(location).attr('href', local_url)
+    }
+    var suggest_url = "http://127.0.0.1:8000/suggest";
+    var search_url = "http://127.0.0.1:8000/search";
+
+
+	$('.searchList').on('click', '.searchItem', function(){
+		$('.searchList .searchItem').removeClass('current');
+		$(this).addClass('current');
+	});
+
+    function removeByValue(arr, val) {
+      for(var i=0; i<arr.length; i++) {
+        if(arr[i] == val) {
+          arr.splice(i, 1);
+          break;
+        }
+      }
+    }
+    // 搜索建议
+    var $searchInput =  $('.searchInput');
+    var $searchItem = $('.searchList>.searchItem ');
+    function suggest() {
+        var $curr = $('.searchList>.current');
+        var searchText = $('.searchInput').val();
+        var className = $curr.attr('data-type');
+
+        console.log(className)
+
+        var tmpHtml = "";
+        $.ajax({
+            type: 'get',
+            dataType: 'json',
+            url: '/search_title/',
+            data: {
+                'keyword': searchText,
+                'type' : className,
+            },
+            async: true,
+            success: function (data) {
+                console.log(data);
+                $.each(data, function (index, result) {
+                    tmpHtml += '<li><a href="' + result.url + '" target="_blank">' + result.title + '</a></li>'
+                });
+                $(".dataList").html("");
+                $(".dataList").append(tmpHtml);
+                if (data.length == 0) {
+                    $('.dataList').hide()
+                } else {
+                    $('.dataList').show()
+                }
+            }
+        });
+    }
+
+
+    $searchInput.keyup(function () {
+        suggest()
+    })
+
+    $searchInput.click(function () {
+        suggest()
+    })
+    $searchInput.blur(function () {
+        $('.dataList').hide()
+    })
+    console.log('test')
+    window.onload = function(){
+        console.log('开始的部分')
+        var UUID = localStorage.getItem('UUID')
+        console.log('UUID: ', UUID)
+        if (!UUID){
+            var UUID = Math.random().toString(36).substring(2)
+	        localStorage.setItem('UUID', UUID)
+        }
+
+    }
+
+
+    // 我的搜索
+    var my_search
+    if (localStorage.mysearch) {
+        my_search = localStorage.getItem('mysearch').split(',')
+    } else {
+        my_search = []
+    }
+
+    $allsearch = $('.all-search')
+    mySearchHtml = ''
+    $.each(my_search,function (index, item) {
+        mySearchHtml += '<a href="http://127.0.0.1:8000/search/?keyword=' + item.split("_")[0] + '&type=' + item.split('_')[1] +  '">' + item.split("_")[0] + '</a>'
+    })
+    $allsearch.html('')
+    $allsearch.html(mySearchHtml)
+
+    function addsearch(value) {
+        console.log('my_search: ', my_search)
+        if (my_search.includes(value)) {
+            my_search.splice( my_search.indexOf(my_search),1)
+            my_search.unshift((value))
+            localStorage.setItem('mysearch',my_search.join(','))
+        } else {
+            my_search.unshift((value))
+            localStorage.setItem('mysearch',my_search.join(','))
+        }
+    }
+
+    $searchButton = $('.inputArea .searchButton')
+    $searchInput = $('.searchInput')
+
+    function search(searchText) {
+        $curr = $('.searchList>.current')
+        var className = $curr.attr('data-type');
+        var mysearch =   searchText + '_' + className
+        addsearch(mysearch)
+        console.log('正在运行路由跳转')
+        location_url = search_url + '?keyword=' +  searchText + '&type=' + className
+        $(location).attr('href', location_url)
+    }
+    $searchButton.click(function () {
+        var searchText = $('.searchInput').val();
+        if ( searchText.trim() ){
+            search(searchText)
+        }
+
+    })
+    $searchInput.keyup(function (e) {
+        var searchText = $('.searchInput').val();
+        if (e.keyCode == 13 && searchText.trim()){
+            search(searchText)
+        }
+    })
+
+</script>
+</html>

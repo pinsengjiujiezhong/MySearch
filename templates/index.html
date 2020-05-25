@@ -1,0 +1,195 @@
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="baidu-site-verification" content="nPxypLjNNn" />
+<meta http-equiv="X-UA-Compatible" content="IE=emulateIE7" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>mtianyan-search 垂直领域搜索引擎</title>
+<link href="../static/css/style.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="../static/css/index.css" type="text/css">
+</head>
+<body>
+<div id="container">
+	<div id="bd">
+        <div id="main">
+        	<h1 class="title">
+            	<a href="#"><div class="logo large"></div></a>
+            </h1>
+            <div class="nav ue-clear">
+            	<ul class="searchList">
+                    <li class="searchItem current" data-type="blog">伯乐在线</li>
+                    <li class="searchItem" data-type="leyoujia">乐有家</li>
+                </ul>
+            </div>
+            <div class="inputArea">
+                <input type="text" name="keyword" class="searchInput" autofocus="autofocus"/>
+                <button type="submit" class="searchButton" ></button>
+                <ul class="dataList">
+                	<li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                </ul>
+            </div>
+
+            <div class="historyArea">
+            	<p class="history">
+                    <label>热门搜索：</label>
+                    {% for search_word in topn_search %}
+                        <a href='/search?q={{ search_word }}&s_type=article'>{{ search_word }}</a>
+                    {% endfor %}
+                </p>
+                <p class="history mysearch">
+                	<label>我的搜索：</label>
+                    <span class="all-search">
+                        <a href="javascript:;"></a>
+                    </span>
+
+                </p>
+            </div>
+        </div><!-- End of main -->
+    </div><!--End of bd-->
+
+    <div class="foot">
+    	<div class="wrap">
+            <div class="copyright">Copyright &copy;search.mtianyan.cn 版权所有  E-mail:search@mtianyan.cn</div>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="../static/js/jquery.js"></script>
+<script type="text/javascript" src="../static/js/global.js"></script>
+<script type="text/javascript">
+    var suggest_url = "http://127.0.0.1:8000/suggest";
+    var search_url = "http://127.0.0.1:8000/search";
+
+
+	$('.searchList').on('click', '.searchItem', function(){
+		$('.searchList .searchItem').removeClass('current');
+		$(this).addClass('current');
+	});
+
+    function removeByValue(arr, val) {
+      for(var i=0; i<arr.length; i++) {
+        if(arr[i] == val) {
+          arr.splice(i, 1);
+          break;
+        }
+      }
+    }
+    // 搜索建议
+    var $searchInput =  $('.searchInput');
+    var $searchItem = $('.searchList>.searchItem ');
+    function suggest() {
+        var $curr = $('.searchList>.current');
+        var searchText = $('.searchInput').val();
+        var className = $curr.attr('data-type');
+
+        console.log(className)
+
+        var tmpHtml = "";
+        $.ajax({
+            type: 'get',
+            dataType: 'json',
+            url: '/search_title/',
+            data: {
+                'keyword': searchText,
+                'type' : className,
+            },
+            async: true,
+            success: function (data) {
+                console.log(data);
+                $.each(data, function (index, result) {
+                    tmpHtml += '<li><a href="' + result.url + '" target="_blank">' + result.title + '</a></li>'
+                });
+                $(".dataList").html("");
+                $(".dataList").append(tmpHtml);
+                if (data.length == 0) {
+                    $('.dataList').hide()
+                } else {
+                    $('.dataList').show()
+                }
+            }
+        });
+    }
+
+    $(function(){
+        $('.searchInput').bind(' input propertychange ',suggest())
+    });
+
+    $searchInput.keyup(function () {
+        suggest()
+    })
+
+    $searchInput.click(function () {
+        suggest()
+    })
+    console.log('test')
+    window.onload = function(){
+        console.log('开始的部分')
+        var UUID = localStorage.getItem('UUID')
+        console.log('UUID: ', UUID)
+        if (!UUID){
+            var UUID = Math.random().toString(36).substring(2)
+	        localStorage.setItem('UUID', UUID)
+        }
+
+    }
+
+
+    // 我的搜索
+    var my_search
+    if (localStorage.mysearch) {
+        my_search = localStorage.getItem('mysearch').split(',')
+    } else {
+        my_search = []
+    }
+
+    $allsearch = $('.all-search')
+    mySearchHtml = ''
+    $.each(my_search,function (index, item) {
+        mySearchHtml += '<a href="http://127.0.0.1:8000/search/?keyword=' + item.split("_")[0] + '&type=' + item.split('_')[1] +  '">' + item.split("_")[0] + '</a>'
+    })
+    $allsearch.html('')
+    $allsearch.html(mySearchHtml)
+
+    function addsearch(value) {
+        console.log('my_search: ', my_search)
+        if (my_search.includes(value)) {
+            my_search.splice( my_search.indexOf(my_search),1)
+            my_search.unshift((value))
+            localStorage.setItem('mysearch',my_search.join(','))
+        } else {
+            my_search.unshift((value))
+            localStorage.setItem('mysearch',my_search.join(','))
+        }
+    }
+
+    $searchButton = $('.searchButton')
+    $searchInput = $('.searchInput')
+
+    function search(searchText) {
+        $curr = $('.searchList>.current')
+        var className = $curr.attr('data-type');
+        var mysearch =   searchText + '_' + className
+        addsearch(mysearch)
+        console.log('正在运行路由跳转')
+        location_url = search_url + '?keyword=' +  searchText + '&type=' + className
+        $(location).attr('href', location_url)
+    }
+    $searchButton.click(function () {
+        var searchText = $('.searchInput').val();
+        if ( searchText.trim() ){
+            search(searchText)
+        }
+
+    })
+    $searchInput.keyup(function (e) {
+        var searchText = $('.searchInput').val();
+        if (e.keyCode == 13 && searchText.trim()){
+            search(searchText)
+        }
+    })
+</script>
+</html>
