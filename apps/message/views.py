@@ -51,7 +51,8 @@ def search(request):
     all_search_j = json.dumps(all_search_d)
     r.set('all_search',all_search_j)
     all_search_l = sorted(all_search_d.items(), key=lambda x: x[1], reverse=True)
-    print('all_search_l: ', all_search_l)
+    if len(all_search_l) > 15:
+        all_search_l = all_search_l[:15]
     es = Elasticsearch([{'host': '127.0.0.1', 'port': 9200}])
     items = es.search(index='search', doc_type='hot_search', body={
         "query": {
@@ -114,7 +115,6 @@ def search(request):
         pageList = range(1, page_num)[page_num-11:]
     else:
         pageList = range(1, page_num)[curr_page - 5: curr_page + 5]
-    print()
     return render(request, 'result.html', {'my_result': result, 'keyword': keyword, 'type': type, 'pageList': pageList, 'n': curr_page, 'pagecount': page_num - 1, 'all_search_l': all_search_l})
 
 def search_title(request):

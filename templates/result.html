@@ -136,6 +136,9 @@
             float: left;
             margin-right: 5px;
         }
+        .page:hover{
+            border: 1px solid #38f;
+        }
         .next{
             height: 32px;
             padding: 0 8px;
@@ -143,8 +146,11 @@
             float: left;
             margin-right: 5px;
         }
+        .next:hover{
+            border: 1px solid #38f;
+        }
         .curr_page{
-            border: 0;
+            border: 1px solid #fff;
             font-weight: bold;
         }
     </style>
@@ -155,14 +161,14 @@
 <div id="container">
 	<div id="hd" class="ue-clear">
         <div class="logobox">
-            <a href="https://blog.csdn.net/qq_35741999/" class="logo">
+            <a href="http://127.0.0.1:8000" class="logo">
                 <img src="../static/images/logo_test.jpg" alt="">
             </a>
         </div>
         <div class="ue-clear">
             <ul class="searchList">
-                <li class="searchItem current" data-type="blog">伯乐在线</li>
-                <li class="searchItem" data-type="leyoujia">乐有家</li>
+                <li class="searchItem " data-type="blog">伯乐在线</li>
+                <li class="searchItem " data-type="leyoujia">乐有家</li>
             </ul>
         </div>
         <div class="inputArea">
@@ -201,7 +207,7 @@
                             </div>
                         {% endfor %}
                     {% elif type == 'leyoujia' %}
-                            <div class="comm-box clearfix">
+                            <div class="clearfix">
                                 <div class="left-box">
                                     <!-- 学校 -->
                                     <div class="list-box">
@@ -226,13 +232,13 @@
                                                                 <span>
                                                                         {{ hits.type }}
                                                                 </span><em class="line"></em>
-                                                                    <span>{{ hits.orientation }}</span><em class="line"></em>
+                                                                <span>{{ hits.orientation }}</span><em class="line"></em>
                                                                 <span>{{ hits.size }}</span><em class="line"></em>
                                                                 <span>{{ hits.big_size }}</span>
                                                             </p>
                                                             <p class="attr">
                                                                     <span>{{ hits.finish }}</span><em class="line"></em>
-                                                                <span>{{ hits.floor }}</span>
+                                                                    <span>{{ hits.floor }}</span>
                                                                     <em class="line"></em><span>{{ hits.year }}</span>
                                                             </p>
                                                             <p class="attr">
@@ -244,14 +250,10 @@
                                                                     <span class="lab lab-mln">{{ tag }}</span>
                                                                 {% endfor %}
                                                             </p>
-                                                            <div class="btns">
-                                                                        <em class="btn collection" data-fhid="83796568" hascollected="0">收藏</em>
-                                                                <em class="btn compareBtn addCompare" data-fhid="83796568">加入对比</em>
-                                                            </div>
                                                         </div>
                                                         <div class="price">
                                                             <p class="sup"><span class="salePrice">{{ hits.price }}</span>万</p>
-                                                            <p class="sub">{{ hits.unitprice }}/p>
+                                                            <p class="sub">{{ hits.unitprice }}</p>
                                                         </div>
                                                     </li>
                                                 {% endfor %}
@@ -264,22 +266,24 @@
 
                     {% endif %}
                     <div class="box" id="box">
-                        {% if n != 1 %}
-                            <div class="next" onclick="changepage('1')">首页</div>
-                            <div class="next" onclick="changepage('old')">上一页</div>
-                        {% endif %}
-                        {% for page in pageList %}
-                            <div class="page {% if page == n %}curr_page{% endif %}" onclick="changepage({{ page }})">{{ page }}</div>
-                        {% endfor %}
-                        {% if n != pagecount %}
-                            <div class="next" onclick="changepage('next')">下一页</div>
-                            <div class="next" onclick="changepage({{ pagecount }})">末页</div>
+                        {% if pagecount != 1 %}
+                            {% if n != 1 %}
+                                <div class="next" onclick="changepage('1')">首页</div>
+                                <div class="next" onclick="changepage('old')">上一页</div>
+                            {% endif %}
+                            {% for page in pageList %}
+                                <div class="page {% if page == n %}curr_page{% endif %}" onclick="changepage({{ page }})">{{ page }}</div>
+                            {% endfor %}
+                            {% if n != pagecount %}
+                                <div class="next" onclick="changepage('next')">下一页</div>
+                                <div class="next" onclick="changepage({{ pagecount }})">末页</div>
+                            {% endif %}
                         {% endif %}
                     </div>
 
                 </div>
             </div>
-            <div style="width: 30%; float: left;">
+            <div style="width: 20%; float: left;">
                 <div style="font: 14px/1.5 bold 微软雅黑;font-weight: bold">热门搜索</div>
                 <ul class="hotsearchList">
                     {% for search in all_search_l %}
@@ -367,12 +371,11 @@
         });
     }
 
-
-    $searchInput.keyup(function () {
+    $searchInput.click(function () {
         suggest()
     })
 
-    $searchInput.click(function () {
+    $searchInput.keyup(function () {
         suggest()
     })
     $searchInput.blur(function () {
@@ -415,7 +418,7 @@
             localStorage.setItem('mysearch',my_search.join(','))
         } else {
             my_search.unshift((value))
-            localStorage.setItem('mysearch',my_search.join(','))
+            {#localStorage.setItem('mysearch',my_search.join(','))#}
         }
     }
 
@@ -424,7 +427,7 @@
 
     function search(searchText) {
         $curr = $('.searchList>.current')
-        var className = $curr.attr('data-type');
+        var className = localStorage.getItem('curr_type')
         var mysearch =   searchText + '_' + className
         addsearch(mysearch)
         console.log('正在运行路由跳转')
@@ -449,6 +452,31 @@
     $hot_search.click(function () {
         var searchText = $(this).html()
         search(searchText)
+    })
+
+    // 搜索的li
+    $searchItem = $('.searchList>.searchItem')
+    $curr_type  = $('.searchList>.current')
+    type = localStorage.getItem('curr_type')
+    if (type == 'blog') {
+        $('.searchList>.searchItem:nth-child(1)').addClass('current')
+    }else if (type == 'leyoujia'){
+        $('.searchList>.searchItem:nth-child(2)').addClass('current')
+    }
+    $searchItem.click(function () {
+        if ($curr_type != $searchItem){
+            var type = $(this).attr('data-type')
+            console.log(type)
+            localStorage.setItem('curr_type',type)
+        }else{
+            $(this).addClass('current')
+            $curr_type.removeClass('current')
+        }
+        var searchText = $('.searchInput').val();
+        console.log('searchText: ', searchText)
+        if (searchText.trim()){
+            search(searchText)
+        }
     })
 
 

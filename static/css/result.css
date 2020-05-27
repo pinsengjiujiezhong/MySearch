@@ -48,14 +48,14 @@ html{*overflow:auto;}
 #main.sideBarHide .sideBar .sideBarShowHide a:hover{*background-position:0 -31px;}
 #main.sideBarHide .sideBar .sideBarShowHide{background:none;}
 
-.resultArea{float:left;width:65%;}
+.resultArea{float:left;width:70%;}
 .resultArea .resultTotal{position:relative;padding-left:30px;margin-bottom:20px;}
 .resultArea .resultTotal .info{color:#9a9a9a;}
 .resultArea .resultTotal .orderOpt{position:absolute;right:50px;}
 .resultArea .resultTotal .orderOpt a{margin-right:10px;color:#0080cc;}
 
 /*搜索结果列表区域*/
-.resultArea .resultList{padding-left:30px; width:70%}
+.resultArea .resultList{padding-left:30px; width:65%}
 .resultArea .resultList .resultItem{margin-bottom:20px;}
 .resultArea .resultList .itemHead{margin-bottom:5px;color:#767676;} 
 .resultArea .resultList .itemHead .keyWord{color:#d90909;}
@@ -96,11 +96,11 @@ html{*overflow:auto;}
 /*立即搜索样式*/
 .subfieldContent .search{margin:45px 0 0 135px;width:130px;height:36px;background:url(../images/btnbg.png); font-weight:bold;border:none;border:1px solid #bfbfbf;line-height:36px;}
 /*联想下拉区域*/
-.inputArea .dataList{display:none;position:absolute;left:0;top:42px;*top:43px;width:470px;padding:5px 0;background:#fff;border:1px solid #bfbfbf;border-top:none;}
+.inputArea .dataList{display:none;z-index:999;position:absolute;left:5px;top:42px;*top:43px;width:530px;padding:5px 0;background:#fff;border:1px solid #bfbfbf;border-top:none;}
 .inputArea .dataList li{padding:2px 15px;font-size:14px;}
 .inputArea .dataList li:hover{background:#f0f0f0;color:#0080cc;font-weight:bold;}
 
 .hotsearchList{padding: 5px 0px 0px 5px }
-.hotsearchList li{font-size:14px;border-bottom: 1px solid #f7c4c4;line-height: 2;text-align: left;color: blue;padding-left: 3px}
+.hotsearchList li{font-size:14px;border-bottom: 1px solid #f3f3f3;line-height: 2;text-align: left;color: blue;padding-left: 3px}
 .hotsearchList li:hover{text-decoration:underline}
 

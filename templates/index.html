@@ -17,7 +17,7 @@
             </h1>
             <div class="nav ue-clear">
             	<ul class="searchList">
-                    <li class="searchItem current" data-type="blog">伯乐在线</li>
+                    <li class="searchItem" data-type="blog">伯乐在线</li>
                     <li class="searchItem" data-type="leyoujia">乐有家</li>
                 </ul>
             </div>
@@ -125,6 +125,9 @@
     $searchInput.click(function () {
         suggest()
     })
+    $searchInput.blur(function () {
+        $('.dataList').hide()
+    })
     console.log('test')
     window.onload = function(){
         console.log('开始的部分')
@@ -189,6 +192,37 @@
         var searchText = $('.searchInput').val();
         if (e.keyCode == 13 && searchText.trim()){
             search(searchText)
+        }
+    })
+    $searchItem.click(function () {
+        if ($curr_type != $searchItem){
+            var type = $(this).attr('data-type')
+            console.log(type)
+            localStorage.setItem('curr_type',type)
+        }else{
+            $(this).addClass('current')
+            $curr_type.removeClass('current')
+        }
+    })
+
+
+    // 搜索的li
+    $searchItem = $('.searchList>.searchItem')
+    $curr_type  = $('.searchList>.current')
+    type = localStorage.getItem('curr_type')
+    if (type == 'blog') {
+        $('.searchList>.searchItem:nth-child(1)').addClass('current')
+    }else if (type == 'leyoujia'){
+        $('.searchList>.searchItem:nth-child(2)').addClass('current')
+    }
+    $searchItem.click(function () {
+        if ($curr_type != $searchItem){
+            var type = $(this).attr('data-type')
+            console.log(type)
+            localStorage.setItem('curr_type',type)
+        }else{
+            $(this).addClass('current')
+            $curr_type.removeClass('current')
         }
     })
 </script>
