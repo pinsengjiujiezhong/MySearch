@@ -48,14 +48,14 @@ html{*overflow:auto;}
 #main.sideBarHide .sideBar .sideBarShowHide a:hover{*background-position:0 -31px;}
 #main.sideBarHide .sideBar .sideBarShowHide{background:none;}
 
-.resultArea{float:left;width:48%;}
+.resultArea{float:left;width:65%;}
 .resultArea .resultTotal{position:relative;padding-left:30px;margin-bottom:20px;}
 .resultArea .resultTotal .info{color:#9a9a9a;}
 .resultArea .resultTotal .orderOpt{position:absolute;right:50px;}
 .resultArea .resultTotal .orderOpt a{margin-right:10px;color:#0080cc;}
 
 /*搜索结果列表区域*/
-.resultArea .resultList{padding-left:30px;}
+.resultArea .resultList{padding-left:30px; width:70%}
 .resultArea .resultList .resultItem{margin-bottom:20px;}
 .resultArea .resultList .itemHead{margin-bottom:5px;color:#767676;} 
 .resultArea .resultList .itemHead .keyWord{color:#d90909;}
@@ -100,4 +100,7 @@ html{*overflow:auto;}
 .inputArea .dataList li{padding:2px 15px;font-size:14px;}
 .inputArea .dataList li:hover{background:#f0f0f0;color:#0080cc;font-weight:bold;}
 
+.hotsearchList{padding: 5px 0px 0px 5px }
+.hotsearchList li{font-size:14px;border-bottom: 1px solid #f7c4c4;line-height: 2;text-align: left;color: blue;padding-left: 3px}
+.hotsearchList li:hover{text-decoration:underline}
 

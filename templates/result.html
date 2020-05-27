@@ -279,6 +279,14 @@
 
                 </div>
             </div>
+            <div style="width: 30%; float: left;">
+                <div style="font: 14px/1.5 bold 微软雅黑;font-weight: bold">热门搜索</div>
+                <ul class="hotsearchList">
+                    {% for search in all_search_l %}
+                        <li>{{ search.0 }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div><!-- End of main -->
     </div><!--End of bd-->
 </div>
@@ -436,6 +444,13 @@
             search(searchText)
         }
     })
+    // 热搜
+    $hot_search = $('.hotsearchList>li')
+    $hot_search.click(function () {
+        var searchText = $(this).html()
+        search(searchText)
+    })
+
 
 </script>
 </html>

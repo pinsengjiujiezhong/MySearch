@@ -8,9 +8,12 @@ from django.shortcuts import HttpResponse
 import json
 from elasticsearch import Elasticsearch
 from redis import StrictRedis
-from asn1crypto.ocsp import Request
+#from asn1crypto.ocsp import Request
+import redis
 
-redis = StrictRedis.from_url('redis://@localhost:6379/1', decode_responses=True)
+pool = redis.ConnectionPool(host='localhost', port=6379, db=3, decode_responses=True)   # host是redis主机，需要redis服务端和客户端都起着 redis默认端口是6379
+r = redis.Redis(connection_pool=pool)
+
 
 KEYWORDS = 'keywords'
 
@@ -34,6 +37,21 @@ def search(request):
     if not curr_page:
         curr_page = 1
     curr_page = int(curr_page)
+    all_search_j = r.get('all_search')
+    if all_search_j:
+        all_search_d = json.loads(all_search_j)
+        if keyword in all_search_d.keys():
+            all_search_d[keyword] += 1
+        else:
+            all_search_d[keyword] = 1
+    else:
+        all_search_d = {
+            keyword: 1
+        }
+    all_search_j = json.dumps(all_search_d)
+    r.set('all_search',all_search_j)
+    all_search_l = sorted(all_search_d.items(), key=lambda x: x[1], reverse=True)
+    print('all_search_l: ', all_search_l)
     es = Elasticsearch([{'host': '127.0.0.1', 'port': 9200}])
     items = es.search(index='search', doc_type='hot_search', body={
         "query": {
@@ -88,10 +106,7 @@ def search(request):
                    'year': item['_source']['year'],
                    }
                   for item in items['hits']['hits']]
-    print({'my_result': result, 'keyword': keyword, 'type': type})
-    print('total: ', total)
     page_num = (total // 10 + 2)
-    print('page_num: ', page_num)
     pageList = range(1, page_num)
     if curr_page < 5:
         pageList = range(1, page_num)[:10]
@@ -100,7 +115,7 @@ def search(request):
     else:
         pageList = range(1, page_num)[curr_page - 5: curr_page + 5]
     print()
-    return render(request, 'result.html', {'my_result': result, 'keyword': keyword, 'type': type, 'pageList': pageList, 'n': curr_page, 'pagecount': page_num - 1})
+    return render(request, 'result.html', {'my_result': result, 'keyword': keyword, 'type': type, 'pageList': pageList, 'n': curr_page, 'pagecount': page_num - 1, 'all_search_l': all_search_l})
 
 def search_title(request):
     if request.method == 'GET':
